@@ -289,7 +289,7 @@ app.onError((err, c) => {
 });
 
 // Queue handler for async tasks (newsletter, etc.)
-export const queueHandler = async (batch: MessageBatch, env: Env) => {
+export const queue = async (batch: MessageBatch, env: Env) => {
   for (const message of batch.messages) {
     try {
       const body = message.body as { type: string; issue_id?: number };
