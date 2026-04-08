@@ -1,91 +1,99 @@
-import { Hono } from 'hono';
-import { cors } from 'hono/cors';
-import { logger } from 'hono/logger';
-import { secureHeaders } from 'hono/secure-headers';
-import type { Env, User } from './types';
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import { logger } from "hono/logger";
+import { secureHeaders } from "hono/secure-headers";
+import type { Env, User } from "./types";
+import type { MessageBatch } from "@cloudflare/workers-types";
 
 // Import routes
-import authRoutes from './routes/auth';
-import recipeRoutes from './routes/recipes';
-import userRoutes from './routes/users';
-import adminRoutes from './routes/admin';
-import quizRoutes from './routes/quiz';
-import uploadRoutes from './routes/uploads';
-import stripeRoutes from './routes/stripe';
-import searchRoutes from './routes/search';
-import printRoutes from './routes/print';
-import newsletterRoutes from './routes/newsletter';
+import authRoutes from "./routes/auth";
+import recipeRoutes from "./routes/recipes";
+import userRoutes from "./routes/users";
+import adminRoutes from "./routes/admin";
+import quizRoutes from "./routes/quiz";
+import uploadRoutes from "./routes/uploads";
+import stripeRoutes from "./routes/stripe";
+import searchRoutes from "./routes/search";
+import printRoutes from "./routes/print";
+import newsletterRoutes from "./routes/newsletter";
 
 // Import middleware
-import { authMiddleware } from './middleware/auth';
+import { authMiddleware } from "./middleware/auth";
 
 const app = new Hono<{ Bindings: Env; Variables: { user: User } }>();
 
 // Global middleware
-app.use('*', logger());
-app.use('*', cors({
-  origin: ['http://localhost:8787', 'https://spud-buds.pages.dev', 'https://spudbuds.cooking'],
-  allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  credentials: true,
-  maxAge: 86400,
-}));
-app.use('*', secureHeaders());
+app.use("*", logger());
+app.use(
+  "*",
+  cors({
+    origin: [
+      "http://localhost:8787",
+      "https://spud-buds.pages.dev",
+      "https://spudbuds.cooking",
+    ],
+    allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    credentials: true,
+    maxAge: 86400,
+  }),
+);
+app.use("*", secureHeaders());
 
 // Health check
-app.get('/health', (c) => {
-  return c.json({ 
-    status: 'ok', 
+app.get("/health", (c) => {
+  return c.json({
+    status: "ok",
     app: c.env.APP_NAME,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
 // Printable recipe cards (public)
-app.route('/print', printRoutes);
+app.route("/print", printRoutes);
 
 // Newsletter (public subscribe/unsubscribe, protected admin routes)
-app.route('/api/newsletter', newsletterRoutes);
+app.route("/api/newsletter", newsletterRoutes);
 
 // API routes
-app.route('/api/auth', authRoutes);
-app.route('/api/recipes', recipeRoutes);
-app.route('/api/quiz', quizRoutes);
-app.route('/api/search', searchRoutes);
+app.route("/api/auth", authRoutes);
+app.route("/api/recipes", recipeRoutes);
+app.route("/api/quiz", quizRoutes);
+app.route("/api/search", searchRoutes);
 
 // Protected routes (require authentication)
-app.use('/api/users/*', authMiddleware);
-app.route('/api/users', userRoutes);
+app.use("/api/users/*", authMiddleware);
+app.route("/api/users", userRoutes);
 
-app.use('/api/uploads/*', authMiddleware);
-app.route('/api/uploads', uploadRoutes);
+app.use("/api/uploads/*", authMiddleware);
+app.route("/api/uploads", uploadRoutes);
 
-app.use('/api/admin/*', authMiddleware);
-app.route('/api/admin', adminRoutes);
+app.use("/api/admin/*", authMiddleware);
+app.route("/api/admin", adminRoutes);
 
 // Stripe webhooks (no auth, uses signature verification)
-app.route('/api/stripe', stripeRoutes);
+app.route("/api/stripe", stripeRoutes);
 
 // Static files for PWA
-app.get('/manifest.json', (c) => {
+app.get("/manifest.json", (c) => {
   return c.json({
-    name: 'Spud Buds Cookbook',
-    short_name: 'Spud Buds',
-    description: 'A children\'s potato cookbook with printable recipes',
-    start_url: '/',
-    display: 'standalone',
-    background_color: '#F4F1DE',
-    theme_color: '#D4A373',
+    name: "Spud Buds Cookbook",
+    short_name: "Spud Buds",
+    description: "A children's potato cookbook with printable recipes",
+    start_url: "/",
+    display: "standalone",
+    background_color: "#F4F1DE",
+    theme_color: "#D4A373",
     icons: [
-      { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-      { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+      { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
   });
 });
 
 // Service Worker
-app.get('/sw.js', (c) => {
-  c.header('Content-Type', 'application/javascript');
+app.get("/sw.js", (c) => {
+  c.header("Content-Type", "application/javascript");
   return c.text(`
     const CACHE_NAME = 'spud-buds-v1';
     const urlsToCache = [
@@ -118,7 +126,7 @@ app.get('/sw.js', (c) => {
 });
 
 // Frontend HTML (for now, will be enhanced with proper templates later)
-app.get('/', (c) => {
+app.get("/", (c) => {
   return c.html(`
     <!DOCTYPE html>
     <html lang="en">
@@ -257,21 +265,61 @@ app.get('/', (c) => {
 
 // 404 handler
 app.notFound((c) => {
-  return c.json({ 
-    success: false, 
-    error: 'Not found',
-    path: c.req.path 
-  }, 404);
+  return c.json(
+    {
+      success: false,
+      error: "Not found",
+      path: c.req.path,
+    },
+    404,
+  );
 });
 
 // Error handler
 app.onError((err, c) => {
-  console.error('Error:', err);
-  return c.json({ 
-    success: false, 
-    error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
-  }, 500);
+  console.error("Error:", err);
+  return c.json(
+    {
+      success: false,
+      error: "Internal server error",
+      message: process.env.NODE_ENV === "development" ? err.message : undefined,
+    },
+    500,
+  );
 });
+
+// Queue handler for async tasks (newsletter, etc.)
+export const queueHandler = async (batch: MessageBatch, env: Env) => {
+  for (const message of batch.messages) {
+    try {
+      const body = message.body as { type: string; issue_id?: number };
+
+      switch (body.type) {
+        case "send_newsletter":
+          // TODO: Implement newsletter sending logic
+          console.log(`Sending newsletter issue ${body.issue_id}`);
+          // Mark as sent in database
+          await env.DB.prepare(
+            `
+            UPDATE newsletter_issues 
+            SET sent_at = CURRENT_TIMESTAMP 
+            WHERE id = ?
+          `,
+          )
+            .bind(body.issue_id)
+            .run();
+          break;
+
+        default:
+          console.log(`Unknown queue message type: ${body.type}`);
+      }
+
+      message.ack();
+    } catch (error) {
+      console.error("Queue message error:", error);
+      message.retry();
+    }
+  }
+};
 
 export default app;
