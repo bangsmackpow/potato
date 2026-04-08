@@ -4,6 +4,7 @@
   "description": "A children's potato cookbook - printable recipes for kids",
   "main": "src/index.ts",
   "scripts": {
+    "build": "echo 'No build step needed for Workers'",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "db:migrate": "wrangler d1 migrations apply spud-buds-db",
