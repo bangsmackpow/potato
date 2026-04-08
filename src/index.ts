@@ -3,7 +3,6 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { secureHeaders } from "hono/secure-headers";
 import type { Env, User } from "./types";
-import type { MessageBatch } from "@cloudflare/workers-types";
 
 // Import routes
 import authRoutes from "./routes/auth";
@@ -287,39 +286,5 @@ app.onError((err, c) => {
     500,
   );
 });
-
-// Queue handler for async tasks (newsletter, etc.)
-export const queue = async (batch: MessageBatch, env: Env) => {
-  for (const message of batch.messages) {
-    try {
-      const body = message.body as { type: string; issue_id?: number };
-
-      switch (body.type) {
-        case "send_newsletter":
-          // TODO: Implement newsletter sending logic
-          console.log(`Sending newsletter issue ${body.issue_id}`);
-          // Mark as sent in database
-          await env.DB.prepare(
-            `
-            UPDATE newsletter_issues 
-            SET sent_at = CURRENT_TIMESTAMP 
-            WHERE id = ?
-          `,
-          )
-            .bind(body.issue_id)
-            .run();
-          break;
-
-        default:
-          console.log(`Unknown queue message type: ${body.type}`);
-      }
-
-      message.ack();
-    } catch (error) {
-      console.error("Queue message error:", error);
-      message.retry();
-    }
-  }
-};
 
 export default app;

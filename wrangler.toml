@@ -30,12 +30,7 @@ bucket_name = "spud-buds-images"
 binding = "CACHE"
 id = "81635b4052c74b79bae399711d49e401"
 
-# Queue for async tasks
+# Queue for async tasks (producer only for now)
 [[queues.producers]]
 binding = "TASK_QUEUE"
 queue = "spud-buds-tasks"
-
-[[queues.consumers]]
-queue = "spud-buds-tasks"
-max_batch_size = 10
-max_batch_timeout = 30
