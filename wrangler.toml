@@ -2,42 +2,34 @@ name = "spud-buds-cookbook"
 main = "src/index.ts"
 compatibility_date = "2024-10-22"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = "./"
 
 # Environment variables
 [vars]
 APP_NAME = "Spud Buds Cookbook"
-PREMIUM_PRICE_ID = "price_premium_yearly" # Replace with actual Stripe price ID
+PREMIUM_PRICE_ID = "price_premium_yearly"
 
 # Secrets (set via `wrangler secret put`):
 # - JWT_SECRET: For signing auth tokens
 # - STRIPE_SECRET_KEY: Stripe API key
 # - STRIPE_WEBHOOK_SECRET: Stripe webhook signing secret
-# - ADMIN_EMAIL: Admin email for notifications
-# - RESEND_API_KEY: For sending emails (if using Resend)
 
 # D1 Database
 [[d1_databases]]
 binding = "DB"
 database_name = "spud-buds-db"
-database_id = "your-database-id-here" # Replace after creating database
+database_id = "your-database-id-here"
 
 # R2 Bucket for images
 [[r2_buckets]]
 binding = "IMAGES_BUCKET"
 bucket_name = "spud-buds-images"
 
-# Durable Objects (for session management if needed)
-# [[durable_objects.bindings]]
-# name = "SESSIONS"
-# class_name = "SessionManager"
-
 # KV for caching
 [[kv_namespaces]]
 binding = "CACHE"
 id = "your-kv-id-here"
 
-# Queue for async tasks (newsletter, etc.)
+# Queue for async tasks
 [[queues.producers]]
 binding = "TASK_QUEUE"
 queue = "spud-buds-tasks"
@@ -46,17 +38,3 @@ queue = "spud-buds-tasks"
 queue = "spud-buds-tasks"
 max_batch_size = 10
 max_batch_timeout = 30
-
-# Environment-specific config
-[env.staging]
-name = "spud-buds-cookbook-staging"
-
-[env.staging.vars]
-APP_NAME = "Spud Buds Cookbook (Staging)"
-DEBUG = "true"
-
-[env.production]
-name = "spud-buds-cookbook"
-
-[env.production.vars]
-APP_NAME = "Spud Buds Cookbook"
