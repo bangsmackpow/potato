@@ -2,6 +2,7 @@ name = "potato"
 main = "src/index.ts"
 compatibility_date = "2024-10-22"
 compatibility_flags = ["nodejs_compat"]
+account_id = "0e528c886015cce349076fb7db222a88"
 
 # Environment variables
 [vars]
