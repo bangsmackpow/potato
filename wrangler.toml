@@ -27,7 +27,7 @@ bucket_name = "spud-buds-images"
 # KV for caching
 [[kv_namespaces]]
 binding = "CACHE"
-id = "your-kv-id-here"
+id = "81635b4052c74b79bae399711d49e401"
 
 # Queue for async tasks
 [[queues.producers]]
