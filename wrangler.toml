@@ -17,7 +17,7 @@ PREMIUM_PRICE_ID = "price_premium_yearly"
 [[d1_databases]]
 binding = "DB"
 database_name = "spud-buds-db"
-database_id = "your-database-id-here"
+database_id = "4e63889c-b9f0-4936-85b1-0a0fc84aaa0b"
 
 # R2 Bucket for images
 [[r2_buckets]]
