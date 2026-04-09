@@ -56,12 +56,13 @@ CREATE TABLE IF NOT EXISTS recipes (
     category_id INTEGER,
     potato_type_id INTEGER,
     difficulty TEXT CHECK (difficulty IN ('easy', 'medium', 'hard')),
-    age_group TEXT CHECK (age_group IN ('4-6', '7-10', '11+', 'all')),
+    age_group TEXT CHECK (age_group IN ('5-8', '8-12', '10-14', 'all')),
     prep_time INTEGER, -- minutes
     cook_time INTEGER, -- minutes
     servings INTEGER,
     image_url TEXT,
     status TEXT DEFAULT 'draft' CHECK (status IN ('draft', 'pending', 'approved', 'rejected')),
+    is_premium INTEGER DEFAULT 0,
     created_by INTEGER,
     approved_by INTEGER,
     approved_at DATETIME,
