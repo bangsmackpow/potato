@@ -1041,10 +1041,9 @@ app.get("/recipes", async (c) => {
               ?.map(
                 (recipe) => `
             <div class="recipe-card" data-category="${recipe.category_id}" data-potato="${recipe.potato_type_id}" data-difficulty="${recipe.difficulty}" data-slug="${recipe.slug}" data-title="${recipe.title}">
-              <div class="recipe-image" data-image-placeholder="true">
+              <div class="recipe-image" data-image-placeholder="true" style="position: relative;">
                 <span style="font-size: 4rem;">🍽️</span>
               </div>
-              <div class="recipe-attribution" style="display: none; font-size: 0.7rem; padding: 0.3rem; background: rgba(0,0,0,0.7); color: white; position: absolute; bottom: 0; left: 0; right: 0;"></div>
               <div class="recipe-content">
                 <span style="display: inline-block; background: var(--color-cream); padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600; color: var(--color-brown); margin-bottom: 0.5rem;">
                   ${recipe.category_name}
@@ -1102,13 +1101,7 @@ app.get("/recipes", async (c) => {
               if (result.success && result.data) {
                 imageDiv.style.position = 'relative';
                 imageDiv.innerHTML = '<img src="' + result.data.url + '" alt="' + title + '" style="width: 100%; height: 100%; object-fit: cover;" crossorigin="anonymous">';
-                
-                const attrDiv = card.querySelector('.recipe-attribution');
-                if (attrDiv) {
-                  attrDiv.style.display = 'block';
-                  attrDiv.innerHTML = 'Photo by <a href="' + result.data.photographer.profile_url + '?utm_source=spud_buds&utm_medium=referral" target="_blank" style="color: #81B29A;">' + result.data.photographer.name + '</a> on <a href="https://unsplash.com/?utm_source=spud_buds&utm_medium=referral" style="color: #81B29A;">Unsplash</a>';
-                  attrDiv.style.cssText = 'font-size: 0.65rem; padding: 0.3rem; background: rgba(0,0,0,0.7); color: white; position: absolute; bottom: 0; left: 0; right: 0; text-align: center;';
-                }
+                imageDiv.innerHTML += '<div style="font-size: 0.65rem; padding: 0.3rem; background: rgba(0,0,0,0.7); color: white; position: absolute; bottom: 0; left: 0; right: 0; text-align: center;">Photo by <a href="' + result.data.photographer.profile_url + '?utm_source=spud_buds&utm_medium=referral" target="_blank" style="color: #81B29A;">' + result.data.photographer.name + '</a> on <a href="https://unsplash.com/?utm_source=spud_buds&utm_medium=referral" style="color: #81B29A;">Unsplash</a></div>';
               }
             } catch (e) {
               console.error('Failed to load image for', title, e);
