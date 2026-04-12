@@ -5,12 +5,14 @@ A children's potato cookbook web application with printable recipes, user submis
 ## Features
 
 ### Core Features
+
 - **Recipe Discovery Quiz**: Kids select their potato type and answer 5 fun questions to find the perfect recipe
 - **Printable Recipe Cards**: Beautiful 1/2 sheet recipe cards with foldable shopping lists
 - **Step-by-Step Instructions**: Kid-friendly recipes with tips and ingredient alternatives
 - **PWA Support**: Works offline with service worker, installable on mobile devices
 
 ### User Features
+
 - Email/password authentication (Google OAuth coming soon)
 - 3 user roles: Admin, Premium, Regular User
 - Recipe submission system with admin approval
@@ -18,6 +20,7 @@ A children's potato cookbook web application with printable recipes, user submis
 - Age-appropriate difficulty levels (4-6, 7-10, 11+)
 
 ### Premium Features ($10/year)
+
 - Upload success photos of completed recipes
 - Points and leaderboard system
 - Featured on recipe pages
@@ -61,6 +64,7 @@ spud-buds-cookbook/
 ## Setup Instructions
 
 ### Prerequisites
+
 - Node.js 20+
 - Cloudflare account
 - Stripe account
@@ -126,11 +130,13 @@ npm run deploy
 ## API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login
 - `POST /api/auth/forgot-password` - Request password reset
 
 ### Recipes
+
 - `GET /api/recipes` - List all approved recipes
 - `GET /api/recipes/:slug` - Get single recipe with details
 - `GET /api/recipes/meta/potato-types` - List potato types
@@ -138,10 +144,12 @@ npm run deploy
 - `POST /api/recipes/submit` - Submit new recipe (auth required)
 
 ### Quiz
+
 - `POST /api/quiz/discover` - Submit quiz, get recipe suggestions
 - `GET /api/quiz/history` - Get user's quiz history (auth required)
 
 ### Users
+
 - `GET /api/users/me` - Get current user profile
 - `PATCH /api/users/me` - Update profile
 - `GET /api/users/favorites` - List favorite recipes
@@ -149,17 +157,20 @@ npm run deploy
 - `DELETE /api/users/favorites/:recipeId` - Remove from favorites
 
 ### Admin (admin only)
+
 - `GET /api/admin/stats` - Dashboard statistics
 - `GET /api/admin/submissions` - Pending recipe submissions
 - `POST /api/admin/submissions/:id/review` - Approve/reject submission
 - `POST /api/admin/recipes` - Create recipe directly
 
 ### Uploads (premium only)
+
 - `POST /api/uploads/recipe-photo` - Upload success photo
 - `GET /api/uploads/my-photos` - List user's uploads
 - `GET /api/uploads/leaderboard` - View points leaderboard
 
 ### Stripe
+
 - `POST /api/stripe/checkout` - Create checkout session
 - `GET /api/stripe/status` - Check subscription status
 - `POST /api/stripe/cancel` - Cancel subscription
@@ -167,15 +178,16 @@ npm run deploy
 
 ## User Roles
 
-| Role | Permissions |
-|------|-------------|
-| **admin** | Full access, approve recipes, create recipes, view stats |
+| Role        | Permissions                                                     |
+| ----------- | --------------------------------------------------------------- |
+| **admin**   | Full access, approve recipes, create recipes, view stats        |
 | **premium** | Upload photos, view leaderboard, earn points, all user features |
-| **user** | Browse recipes, submit recipes, save favorites, rate recipes |
+| **user**    | Browse recipes, submit recipes, save favorites, rate recipes    |
 
 ## Recipe Discovery Algorithm
 
 The quiz matches users to recipes based on:
+
 1. Selected potato type (russet, red, yukon gold, etc.)
 2. Flavor preferences (savory, sweet, spicy, mild)
 3. Texture preferences (crispy, soft, creamy, crunchy)
@@ -188,6 +200,7 @@ Results are sorted by relevance and date.
 ## Database Schema Highlights
 
 ### Key Tables
+
 - **users**: User accounts with roles
 - **recipes**: Recipe content with status (draft/pending/approved/rejected)
 - **ingredients**: Recipe ingredients with alternatives for allergies
@@ -225,6 +238,8 @@ Results are sorted by relevance and date.
 - [ ] Social sharing features
 - [ ] Shopping list generation
 - [ ] Meal planning calendar
+
+## Session: ENDED
 
 ## License
 
