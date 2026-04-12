@@ -1042,11 +1042,7 @@ app.get("/recipes", async (c) => {
                 (recipe) => `
             <div class="recipe-card" data-category="${recipe.category_id}" data-potato="${recipe.potato_type_id}" data-difficulty="${recipe.difficulty}" data-slug="${recipe.slug}" data-title="${recipe.title}">
               <div class="recipe-image" data-image-placeholder="true">
-                ${
-                  recipe.image_url && recipe.image_url !== "/images/default.jpg"
-                    ? `<img src="${recipe.image_url}" alt="${recipe.title}" style="width: 100%; height: 100%; object-fit: cover;">`
-                    : `<span style="font-size: 4rem;">🍽️</span>`
-                }
+                <span style="font-size: 4rem;">🍽️</span>
               </div>
               <div class="recipe-attribution" style="display: none; font-size: 0.7rem; padding: 0.3rem; background: rgba(0,0,0,0.7); color: white; position: absolute; bottom: 0; left: 0; right: 0;"></div>
               <div class="recipe-content">
