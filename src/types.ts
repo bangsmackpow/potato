@@ -1,33 +1,39 @@
-import type { D1Database, R2Bucket, KVNamespace, Queue } from '@cloudflare/workers-types';
+import type {
+  D1Database,
+  R2Bucket,
+  KVNamespace,
+  Queue,
+} from "@cloudflare/workers-types";
 
 // Environment bindings from wrangler.toml
 export interface Env {
   // D1 Database
   DB: D1Database;
-  
+
   // R2 Bucket for image storage
   IMAGES_BUCKET: R2Bucket;
-  
+
   // KV for caching
   CACHE: KVNamespace;
-  
+
   // Queue for async tasks
   TASK_QUEUE: Queue;
-  
+
   // Environment variables
   APP_NAME: string;
   PREMIUM_PRICE_ID: string;
-  
+
   // Secrets (set via wrangler secret)
   JWT_SECRET: string;
   STRIPE_SECRET_KEY: string;
   STRIPE_WEBHOOK_SECRET: string;
   ADMIN_EMAIL: string;
+  UNSPLASH_ACCESS_KEY?: string;
   RESEND_API_KEY?: string;
 }
 
 // User types
-export type UserRole = 'admin' | 'premium' | 'user';
+export type UserRole = "admin" | "premium" | "user";
 
 export interface User {
   id: number;
@@ -41,9 +47,9 @@ export interface User {
 }
 
 // Recipe types
-export type RecipeStatus = 'draft' | 'pending' | 'approved' | 'rejected';
-export type Difficulty = 'easy' | 'medium' | 'hard';
-export type AgeGroup = '4-6' | '7-10' | '11+' | 'all';
+export type RecipeStatus = "draft" | "pending" | "approved" | "rejected";
+export type Difficulty = "easy" | "medium" | "hard";
+export type AgeGroup = "4-6" | "7-10" | "11+" | "all";
 
 export interface PotatoType {
   id: number;
@@ -103,7 +109,7 @@ export interface Recipe {
   created_by: number | null;
   created_at: string;
   updated_at: string;
-  
+
   // Joined fields
   category?: Category;
   potato_type?: PotatoType;

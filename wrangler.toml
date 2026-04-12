@@ -13,6 +13,7 @@ PREMIUM_PRICE_ID = "price_premium_yearly"
 # - JWT_SECRET: For signing auth tokens
 # - STRIPE_SECRET_KEY: Stripe API key
 # - STRIPE_WEBHOOK_SECRET: Stripe webhook signing secret
+# - UNSPLASH_ACCESS_KEY: For recipe images (get from https://unsplash.com/developers)
 
 # D1 Database
 [[d1_databases]]
